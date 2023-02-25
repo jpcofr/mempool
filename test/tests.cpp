@@ -12,6 +12,31 @@ class SolutionTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+
+TEST_F(SolutionTest, chunk_allocation_respects_subpool_chunk_amount) {
+
+  // Arrange
+  SubPoolDescriptor sp_descriptor_size_1(1, 1U);
+  SubPoolDescriptor sp_descriptor_size_2(2, 2U);
+  MempoolConfig mempoolConfig;
+  mempoolConfig.push_back(sp_descriptor_size_1);
+  mempoolConfig.push_back(sp_descriptor_size_2);
+  Mempool mempool(mempoolConfig, 1U);
+
+  // Act
+  // FIXME Choosing the minimal useful datastructure not uyet implemented
+  EXPECT_THROW(mempool.aligned_alloc(4U), std::invalid_argument);
+
+  try {
+    // Assert
+    mempool.aligned_alloc(4U);
+  } catch (const std::invalid_argument& e) {
+    // Assert
+    EXPECT_STREQ(e.what(),
+                 "Memory chunk allocation should be restricted to the number of chunks that a sub-pool can hold.");
+  }
+}
+
 TEST_F(SolutionTest, protect_memory_chunk_allocation_from_oversized_chunks) {
   // Arrange
   SubPoolDescriptor sp_descriptor_size_1(1, 1U);

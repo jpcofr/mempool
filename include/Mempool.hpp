@@ -3,11 +3,26 @@
 #include <vector>
 #include <algorithm>
 
+struct ChunkDescriptor {
+  void* address;
+  bool is_assigned;
+
+  ChunkDescriptor(void* ptr, bool is_assigned = false) :
+    address(ptr), is_assigned(is_assigned) {}
+};
+
 struct SubPoolDescriptor {
   int32_t chunk_amount;
   std::size_t chunk_size;
+  std::vector<ChunkDescriptor>
+      chunk_descriptors;
+
   SubPoolDescriptor(int32_t amount, std::size_t size)
-      : chunk_amount(amount), chunk_size(size) {}
+      : chunk_amount(amount), chunk_size(size) {
+    for (int32_t i = 0; i < amount; ++i) {
+      chunk_descriptors.emplace_back(ChunkDescriptor(nullptr));
+    }
+  }
 };
 
 typedef std::vector<SubPoolDescriptor> MempoolConfig;
@@ -15,7 +30,7 @@ typedef std::vector<SubPoolDescriptor> MempoolConfig;
 /**
  * [ ] The mempool pre-allocates a continuous memory range that it will manage throughout its lifecycle.
  * [ ] It is constructed from multiple, user-defined sub-pools with fixed memory chunk sizes.
- * [ ] The request to allocate a memory within a mempool should result in an allocation of the
+ * [ ] The request to allocate memory within a mempool should result in an allocation of the
  *         chunk within the sub-pool that has the smallest possible chunk that will fit the
  *         requested allocation size.
  *
@@ -23,7 +38,7 @@ typedef std::vector<SubPoolDescriptor> MempoolConfig;
  * [ ] Chunk sizes should be multiples of the provided alignment.
  * [ ] The mempool has limited memory assigned when created should have an internal limit of the maximum amount of memory that it can allocate in total during creation.
 *  [x] Allocation of memory chunks should be protected against attempts to allocate a size bigger than the biggest chunk.
- * [ ] Allocation of memory chunks should be protected against attempts to allocate more chunks that the given sub-pool can hold.
+// TODO [ ] Allocation of memory chunks should be protected against attempts to allocate more chunks that the given sub-pool can hold.
  * [ ] The creation of a mempool with sub-pool configuration where the sum of all chunks would be bigger than the predefined limit is disallowed.
  * [ ] Allocations & deallocations of memory chunks within the mempool should be thread safe.
  * [ ] The mempool should operate only on the pre-allocated memory that was allocated during the mempool creation, therefore an attempt to allocate a chunk within the sub-pool that is fully allocated shouldn't cause the mempool to resize, but should be treated as an erroneous situation.
