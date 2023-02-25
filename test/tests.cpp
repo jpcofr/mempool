@@ -12,6 +12,29 @@ class SolutionTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+TEST_F(SolutionTest, protect_memory_chunk_allocation_from_oversized_chunks) {
+  // Arrange
+  SubPoolDescriptor sp_descriptor_size_1(1, 1U);
+  SubPoolDescriptor sp_descriptor_size_2(2, 2U);
+  MempoolConfig mempoolConfig;
+  mempoolConfig.push_back(sp_descriptor_size_1);
+  mempoolConfig.push_back(sp_descriptor_size_2);
+  Mempool mempool(mempoolConfig, 1U);
+
+  // Act
+  EXPECT_THROW(mempool.aligned_alloc(4U), std::invalid_argument);
+
+  try {
+    // Assert
+    mempool.aligned_alloc(4U);
+  } catch (const std::invalid_argument& e) {
+    // Assert
+    EXPECT_STREQ(e.what(),
+                 "The pool cannot provide a chunk of this size as it is larger "
+                 "than the preconfigured sizes");
+  }
+}
+
 TEST_F(SolutionTest, configuration_has_entries) {
   // Arrange
   MempoolConfig mempool_config;
@@ -40,7 +63,6 @@ TEST_F(SolutionTest, chunk_amount_and_size_are_consistent) {
 
   MempoolConfig mempool_config_no_size;
   mempool_config_no_size.push_back(sp_descriptor_no_size);
-
 
   // Act
   EXPECT_THROW(Mempool mempool(mempool_config_no_chunks, 1U),

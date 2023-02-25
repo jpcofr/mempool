@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstdint>
 #include <vector>
+#include <algorithm>
 
 struct SubPoolDescriptor {
   int32_t chunk_amount;
@@ -21,7 +22,7 @@ typedef std::vector<SubPoolDescriptor> MempoolConfig;
  ** Requirements
  * [ ] Chunk sizes should be multiples of the provided alignment.
  * [ ] The mempool has limited memory assigned when created should have an internal limit of the maximum amount of memory that it can allocate in total during creation.
- * [ ] Allocation of memory chunks should be protected against attempts to allocate a size bigger than the biggest chunk.
+*  [x] Allocation of memory chunks should be protected against attempts to allocate a size bigger than the biggest chunk.
  * [ ] Allocation of memory chunks should be protected against attempts to allocate more chunks that the given sub-pool can hold.
  * [ ] The creation of a mempool with sub-pool configuration where the sum of all chunks would be bigger than the predefined limit is disallowed.
  * [ ] Allocations & deallocations of memory chunks within the mempool should be thread safe.
@@ -37,11 +38,15 @@ typedef std::vector<SubPoolDescriptor> MempoolConfig;
 
 class Mempool {
  public:
-  static constexpr std::size_t max_pool_memory_size = 2048 * 1024;
+  // Pool size: 5120. Chunk size: 1024. Chunk amount: 5
+  static constexpr std::size_t max_pool_memory_size = 5120 * 1024;
 
   Mempool(MempoolConfig config, std::size_t alignment);
   ~Mempool();
 
-  void* alloc(std::size_t size);
+  void* aligned_alloc(std::size_t size);
   void* free(void* p);
+
+  private:
+  MempoolConfig _config;
 };
