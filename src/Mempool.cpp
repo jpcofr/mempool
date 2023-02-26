@@ -34,7 +34,7 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
   uint16_t initialized_subpools = 0;
   for (auto& subpool : _config) {
     // Set the base address and initialize chunks
-    subpool._base_ptr = reinterpret_cast<void*>(subpool_base_ptr);
+    subpool.base_ptr = reinterpret_cast<void*>(subpool_base_ptr);
     subpool.initialize_chunks();
     initialized_subpools++;
     // Update the initial address of the subpool
@@ -70,6 +70,7 @@ void* Mempool::aligned_alloc(std::size_t chunk_size) {
         "larger than the preconfigured sizes");
 
   SubPoolDescriptor subpool = *subpool_it;
+  return nullptr;
 }
 
 void* Mempool::free(void* chunk_ptr) {

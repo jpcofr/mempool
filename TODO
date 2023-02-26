@@ -4,6 +4,8 @@
    [x] Identify corner cases
    [x] Add test for corner cases
    [ ] Finish test implementation for failed allocation
+   [ ] Improve signature pointers for std::raw_ptr<> or std::unique_ptr<>.
+   [ ] Replace mocks in tests with gtest mocks.
 [x] It is constructed from multiple, user-defined sub-pools with fixed memory chunk sizes.
    [ ] Decide which of the invariants for alignment allocation (for supbpools and tests) deserve coding a test.
    [ ] Add test for corner cases
@@ -28,7 +30,10 @@
 [ ] The creation of a mempool with sub-pool configuration where the sum of all chunks would be bigger than the predefined limit is disallowed.
 [ ] Allocations & deallocations of memory chunks within the mempool should be thread safe.
    [x] Refactor data structures
-   [ ] Allow mutual exclusion through locks or other synchronization primitives
+   [x] Allow mutual exclusion through locks or other synchronization primitives
+   [ ] Identify corner cases
+   [ ] Test corner cases
+   [ ] Replace mocks in tests with gtest mocks.
 [ ] The mempool should operate only on the pre-allocated memory that was allocated during the mempool creation, therefore an attempt to allocate a chunk within the sub-pool that is fully allocated shouldn't cause the mempool to resize, but should be treated as an erroneous situation.
    [ ] Test corner case: "every chunk in the chosen subpool is already allocated"
 [ ] Deallocation of memory chunks should be protected against attempts to deallocate a pointer that wasn't allocated within the mempool.

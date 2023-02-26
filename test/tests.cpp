@@ -12,6 +12,14 @@ class MempoolTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+TEST(MempoolTest, DISABLED_test_chunk_descriptor) {
+  // TODO check if the subpool descriptors are initialized correctly.
+  // Currently there are two invariants: the total_subpools as a function of the
+  // chunk size and amount and descriptors that should have been validated
+  // before the subpool's initialization.
+  // A similar test could be done for the chunks as there are two ways to calculate the original sizes: by adding address and doing arithmetic assuming that the collectios are validated or using the constant properties in the function.
+}
+
 TEST(MempoolTest, DISABLED_Mempool_descriptor_initialization) {
   // TODO check if the subpool descriptors are initialized correctly.
   // Currently there are two invariants: the total_subpools as a function of the
