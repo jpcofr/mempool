@@ -3,19 +3,20 @@
    [x] Add OS system calls to free memory in Mempool constructor
    [x] Identify corner cases
    [x] Add test for corner cases
-   [ ] Replace mocks in tests with gtest mocks for the memory allocation test.
    [ ] Finish test implementation for failed allocation
-[ ] It is constructed from multiple, user-defined sub-pools with fixed memory chunk sizes.
+[x] It is constructed from multiple, user-defined sub-pools with fixed memory chunk sizes.
+   [ ] Decide which of the invariants for alignment allocation (for supbpools and tests) deserve coding a test.
+   [ ] Add test for corner cases
+   [ ] Replace mocks in tests with gtest mocks.
 [ ] The request to allocate memory within a mempool should result in an allocation of the
         chunk within the sub-pool that has the smallest possible chunk that will fit the
         requested allocation size.
    [ ] List corner cases to test
    [ ] Add test for corner cases
    [ ] Replace mocks in tests with gtest mocks.
- *Requirements
 [ ] Chunk sizes should be multiples of the provided alignment.
-  [ ] Identify corner cases
-   [ ] Add test for corner cases
+  [x] Identify corner cases
+  [ ] Add test for corner cases
 [ ] The mempool has limited memory assigned when created should have an internal limit of the maximum amount of memory that it can allocate in total during creation.
  [x] Allocation of memory chunks should be protected against attempts to allocate a size bigger than the biggest chunk.
    [ ] Identify more corner cases
@@ -33,8 +34,9 @@
 [ ] Deallocation of memory chunks should be protected against attempts to deallocate a pointer that wasn't allocated within the mempool.
    [ ] free(void*) shall throw an exception when the chunk freed is locked by mempool clients.
    [ ] mempool shall throw an exception if a chunk cannot be freed because it is being read at least one chunk owner.
-[ ] Allocation of the main memory range should be aligned to the provided alignment.
-   [ ] List corner cases to test
+[x] Allocation of the main memory range should be aligned to the provided alignment.
+   [x] List corner cases to test
+   [ ] Analize other possible corner cases found after completed tasks and merge them with the list.
    [ ] Add test for corner cases
 [ ] Upon destruction of the mempool, the mempool should print the statistics of usage:
      [ ] peak usage of the chunks within each sub-pool,

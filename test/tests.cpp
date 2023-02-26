@@ -12,20 +12,18 @@ class MempoolTest : public ::testing::Test {
   void TearDown() override {}
 };
 
-TEST(MempoolTest, DISABLED_Mempool_memory_segment_fails_when_Segment_is_null) {
-  // FIXME: Check if this test is really needed.
-  //Arrange
-  void* _memory_segment = nullptr;
-  //Act and Assert
-  EXPECT_THROW(std::free(_memory_segment), std::invalid_argument);
+TEST(MempoolTest, DISABLED_Mempool_descriptor_initialization) {
+  // TODO check if the subpool descriptors are initialized correctly.
+  // Currently there are two invariants: the total_subpools as a function of the
+  // chunk size and amount and descriptors that should have been validated
+  // before the subpool's initialization.
+  // A similar test could be done for the chunks as there are two ways to calculate the original sizes: by adding address and doing arithmetic assuming that the collectios are validated or using the constant properties in the function.
 }
 
 TEST(MempoolTest, DISABLED_physical_memory_allocation_fails) {
   // Arrange
-  // Create a mock of the physical memory allocation whose size is less than Mempool:max_pool_memory_size
-  // Act
-  // Construct a Mempool object
-  // Assert
+  // Create a mock of the physical memory allocation whose size is less than
+  // Mempool:max_pool_memory_size Act Construct a Mempool object Assert
   // std::bad_alloc& is thrown
 }
 

@@ -20,13 +20,25 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
 
   // Allocate physical memory
   try {
-    _memory_segment = std::malloc(max_pool_memory_size);
-    if (_memory_segment == nullptr) {
+    _base_ptr = std::malloc(max_pool_memory_size);
+    if (_base_ptr == nullptr) {
       throw std::bad_alloc();
     }
   } catch (std::bad_alloc& e) {
     std::cerr << "Allocation failed: " << e.what() << std::endl;
     // Perform error handling or cleanup as required.
+  }
+
+  // Initialize subpools
+  auto subpool_base_ptr = reinterpret_cast<std::uintptr_t>(_base_ptr);
+  uint16_t initialized_subpools = 0;
+  for (auto& subpool : _config) {
+    // Set the base address and initialize chunks
+    subpool._base_ptr = reinterpret_cast<void*>(subpool_base_ptr);
+    subpool.initialize_chunks();
+    initialized_subpools++;
+    // Update the initial address of the subpool
+    subpool_base_ptr += initialized_subpools * subpool.subpool_size();
   }
 }
 
@@ -62,8 +74,8 @@ void* Mempool::aligned_alloc(std::size_t chunk_size) {
 
 void* Mempool::free(void* p) {
   // Releases the Mempool memory segment back to the OS
-  if (_memory_segment != nullptr) {
-    std::free(_memory_segment);
+  if (_base_ptr != nullptr) {
+    std::free(_base_ptr);
   } else {
     // Handle the case where _memory_segment is null
   }
