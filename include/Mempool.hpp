@@ -18,6 +18,6 @@ class Mempool {
   void* free(void* chunk_ptr);
 
  private:
-  MempoolConfig _config;
+  MempoolConfig config;
   void* _base_ptr;
 };

@@ -7,7 +7,7 @@
    [ ] Improve signature pointers for std::raw_ptr<> or std::unique_ptr<>.
    [ ] Replace mocks in tests with gtest mocks.
 [x] It is constructed from multiple, user-defined sub-pools with fixed memory chunk sizes.
-   [ ] Decide which of the invariants for alignment allocation (for supbpools and tests) deserve coding a test.
+   [ ] Decide which of the invariants for alignment allocation (for subpools and tests) deserve coding a test.
    [ ] Add test for corner cases
    [ ] Replace mocks in tests with gtest mocks.
 [x] The request to allocate memory within a mempool should result in an allocation of the

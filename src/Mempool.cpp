@@ -3,10 +3,14 @@
 #include <iostream>
 
 Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
-  // config validation
+  /// config validation
   if (config.empty())
     throw std::invalid_argument("config should have at least one subpool");
 
+  if (alignment == 0)
+    throw std::invalid_argument("alignment must be greater than zero");
+
+  // Subpool descriptor validation
   for (auto& sp_descriptor : config) {
     if (sp_descriptor.chunk_amount <= 0) {
       throw std::invalid_argument(
@@ -16,7 +20,8 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
     }
   }
 
-  _config = config;
+  /// Realize the configuration in physical memory
+  this->config = config;
 
   // Allocate physical memory
   try {
@@ -32,7 +37,7 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
   // Initialize subpools
   auto subpool_base_ptr = reinterpret_cast<std::uintptr_t>(_base_ptr);
   uint16_t initialized_subpools = 0;
-  for (auto& subpool : _config) {
+  for (auto& subpool : this->config) {
     // Set the base address and initialize chunks
     subpool.base_ptr = reinterpret_cast<void*>(subpool_base_ptr);
     subpool.initialize_chunks();
@@ -47,7 +52,7 @@ Mempool::~Mempool() {}
 void* Mempool::aligned_alloc(std::size_t chunk_size) {
   // Protect memory chunk allocation from oversized chunks
   auto largestChunkDescriptor = std::max_element(
-      _config.begin(), _config.end(),
+      this->config.begin(), this->config.end(),
       [](const SubPoolDescriptor& a, const SubPoolDescriptor& b) {
         return a.chunk_size < b.chunk_size;
       });
@@ -59,12 +64,12 @@ void* Mempool::aligned_alloc(std::size_t chunk_size) {
 
   // Find the subpool with the smallest chunk that fits the requested chunk size
   auto subpool_it = std::min_element(
-      std::begin(_config), std::end(_config),
+      std::begin(this->config), std::end(this->config),
       [chunk_size](const SubPoolDescriptor& a, const SubPoolDescriptor& b) {
         return a.chunk_size < b.chunk_size && a.chunk_size < chunk_size;
       });
 
-  if (subpool_it == std::end(_config))
+  if (subpool_it == std::end(this->config))
     throw std::out_of_range(
         "The pool cannot provide a chunk of this size as it is "
         "larger than the preconfigured sizes");
