@@ -5,14 +5,14 @@
 
 #include "Mempool.hpp"
 
-class SolutionTest : public ::testing::Test {
+class MempoolTest : public ::testing::Test {
  protected:
   void SetUp() override {}
 
   void TearDown() override {}
 };
 
-TEST_F(SolutionTest,
+TEST_F(MempoolTest,
        chunk_allocation_chooses_pool_descriptors_with_the_smallest_chunk_size) {
   // Arrange
   // First subpool size 1
@@ -53,7 +53,7 @@ TEST_F(SolutionTest,
   }
 }
 
-TEST_F(SolutionTest,
+TEST_F(MempoolTest,
        DISABLED_chunk_allocation_chooses_pool_descriptors_with_free_chunks) {
   // FIXME: Disabled (not yet implemented)
   // Arrange
@@ -79,7 +79,7 @@ TEST_F(SolutionTest,
   }
 }
 
-TEST_F(SolutionTest, DISABLED_chunk_allocation_respects_subpool_chunk_amount) {
+TEST_F(MempoolTest, DISABLED_chunk_allocation_respects_subpool_chunk_amount) {
   // FIXME: Disabled (not yet implemented)
   // Arrange
   SubPoolDescriptor sp_descriptor_size_1(1, 1U);
@@ -103,7 +103,7 @@ TEST_F(SolutionTest, DISABLED_chunk_allocation_respects_subpool_chunk_amount) {
   }
 }
 
-TEST_F(SolutionTest, protect_memory_chunk_allocation_from_oversized_chunks) {
+TEST_F(MempoolTest, protect_memory_chunk_allocation_from_oversized_chunks) {
   // Arrange
   SubPoolDescriptor sp_descriptor_size_1(1, 1U);
   SubPoolDescriptor sp_descriptor_size_2(2, 2U);
@@ -126,7 +126,7 @@ TEST_F(SolutionTest, protect_memory_chunk_allocation_from_oversized_chunks) {
   }
 }
 
-TEST_F(SolutionTest, configuration_has_entries) {
+TEST_F(MempoolTest, configuration_has_entries) {
   // Arrange
   MempoolConfig mempool_config;
 
@@ -139,7 +139,7 @@ TEST_F(SolutionTest, configuration_has_entries) {
   }
 }
 
-TEST_F(SolutionTest, chunk_amount_and_size_are_consistent) {
+TEST_F(MempoolTest, chunk_amount_and_size_are_consistent) {
   // Arrange
 
   SubPoolDescriptor sp_descriptor_no_chunks(0, 1U);
