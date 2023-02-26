@@ -20,8 +20,8 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
 
   // Allocate physical memory
   try {
-    _memory = std::malloc(max_pool_memory_size);
-    if (_memory == nullptr) {
+    _memory_segment = std::malloc(max_pool_memory_size);
+    if (_memory_segment == nullptr) {
       throw std::bad_alloc();
     }
   } catch (std::bad_alloc& e) {
@@ -61,6 +61,11 @@ void* Mempool::aligned_alloc(std::size_t chunk_size) {
 }
 
 void* Mempool::free(void* p) {
-  // TODO Implement
+  // Releases the Mempool memory segment back to the OS
+  if (_memory_segment != nullptr) {
+    std::free(_memory_segment);
+  } else {
+    // Handle the case where _memory_segment is null
+  }
   return nullptr;
 }

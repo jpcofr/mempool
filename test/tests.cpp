@@ -12,6 +12,14 @@ class MempoolTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+TEST(MempoolTest, DISABLED_Mempool_memory_segment_fails_when_Segment_is_null) {
+  // FIXME: Check if this test is really needed.
+  //Arrange
+  void* _memory_segment = nullptr;
+  //Act and Assert
+  EXPECT_THROW(std::free(_memory_segment), std::invalid_argument);
+}
+
 TEST(MempoolTest, DISABLED_physical_memory_allocation_fails) {
   // Arrange
   // Create a mock of the physical memory allocation whose size is less than Mempool:max_pool_memory_size

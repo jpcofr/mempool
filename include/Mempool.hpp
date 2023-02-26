@@ -15,5 +15,5 @@ class Mempool {
 
  private:
   MempoolConfig _config;
-  void* _memory;
+  void* _memory_segment;
 };
