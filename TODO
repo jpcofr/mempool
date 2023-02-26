@@ -24,7 +24,7 @@
    [ ] Replace mocks in tests with gtest mocks.
 [ ] The creation of a mempool with sub-pool configuration where the sum of all chunks would be bigger than the predefined limit is disallowed.
 [ ] Allocations & deallocations of memory chunks within the mempool should be thread safe.
-   [ ] Refactor data structures
+   [x] Refactor data structures
    [ ] Allow mutual exclusion through locks or other synchronization primitives
 [ ] The mempool should operate only on the pre-allocated memory that was allocated during the mempool creation, therefore an attempt to allocate a chunk within the sub-pool that is fully allocated shouldn't cause the mempool to resize, but should be treated as an erroneous situation.
    [ ] Test corner case: "every chunk in the chosen subpool is already allocated"
