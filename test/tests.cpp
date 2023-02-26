@@ -12,6 +12,97 @@ class SolutionTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+TEST_F(SolutionTest,
+       chunk_allocation_chooses_pool_descriptors_with_the_smallest_chunk_size) {
+  // Arrange
+  // First subpool size 1
+  SubPoolDescriptor sp_descriptor_size_1(2, 1U);
+  void* memory_address_0 = reinterpret_cast<int32_t*>(0);
+  ChunkDescriptor chunk_descriptor_0(memory_address_0);
+  void* memory_address_1 = reinterpret_cast<int32_t*>(1);
+  ChunkDescriptor chunk_descriptor_size_2(memory_address_1);
+  sp_descriptor_size_1.chunk_descriptors.push_back(chunk_descriptor_0);
+  sp_descriptor_size_1.chunk_descriptors.push_back(chunk_descriptor_size_2);
+
+  // Second subpool size 2
+  SubPoolDescriptor sp_descriptor_size_2(2, 2U);
+  void* memory_address_2 = reinterpret_cast<int32_t*>(2);
+  ChunkDescriptor chunk_descriptor_2(memory_address_2);
+  void* memory_address_3 = reinterpret_cast<int32_t*>(3);
+  ChunkDescriptor chunk_descriptor_3(memory_address_3);
+  sp_descriptor_size_2.chunk_descriptors.push_back(chunk_descriptor_size_2);
+  sp_descriptor_size_2.chunk_descriptors.push_back(chunk_descriptor_3);
+
+  MempoolConfig mempoolConfig;
+  mempoolConfig.push_back(sp_descriptor_size_1);
+  mempoolConfig.push_back(sp_descriptor_size_2);
+
+  Mempool mempool(mempoolConfig, 1U);
+
+  // Act
+  try {
+    // Assert
+    void* allocated_address = mempool.aligned_alloc(1U);
+
+  } catch (const std::invalid_argument& e) {
+    // Assert
+    EXPECT_STREQ(
+        e.what(),
+        "The pool cannot provide a chunk of this size as it is larger than the "
+        "preconfigured sizes");
+  }
+}
+
+TEST_F(SolutionTest,
+       DISABLED_chunk_allocation_chooses_pool_descriptors_with_free_chunks) {
+  // FIXME: Disabled (not yet implemented)
+  // Arrange
+  // Prepare chunks
+  SubPoolDescriptor sp_descriptor_size_1(1, 1U);
+  SubPoolDescriptor sp_descriptor_size_2(2, 2U);
+  MempoolConfig mempoolConfig;
+  mempoolConfig.push_back(sp_descriptor_size_1);
+  mempoolConfig.push_back(sp_descriptor_size_2);
+  Mempool mempool(mempoolConfig, 1U);
+
+  // Act
+  EXPECT_THROW(mempool.aligned_alloc(4U), std::invalid_argument);
+
+  try {
+    // Assert
+    mempool.aligned_alloc(4U);
+  } catch (const std::invalid_argument& e) {
+    // Assert
+    EXPECT_STREQ(
+        e.what(),
+        "Memory chunk allocation is restricted to sub-pools with free chunks.");
+  }
+}
+
+TEST_F(SolutionTest, DISABLED_chunk_allocation_respects_subpool_chunk_amount) {
+  // FIXME: Disabled (not yet implemented)
+  // Arrange
+  SubPoolDescriptor sp_descriptor_size_1(1, 1U);
+  SubPoolDescriptor sp_descriptor_size_2(2, 2U);
+  MempoolConfig mempoolConfig;
+  mempoolConfig.push_back(sp_descriptor_size_1);
+  mempoolConfig.push_back(sp_descriptor_size_2);
+  Mempool mempool(mempoolConfig, 1U);
+
+  // Act
+  EXPECT_THROW(mempool.aligned_alloc(4U), std::invalid_argument);
+
+  try {
+    // Assert
+    mempool.aligned_alloc(4U);
+  } catch (const std::invalid_argument& e) {
+    // Assert
+    EXPECT_STREQ(e.what(),
+                 "Memory chunk allocation should be restricted to the number "
+                 "of chunks that a sub-pool can hold.");
+  }
+}
+
 TEST_F(SolutionTest, protect_memory_chunk_allocation_from_oversized_chunks) {
   // Arrange
   SubPoolDescriptor sp_descriptor_size_1(1, 1U);
