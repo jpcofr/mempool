@@ -15,7 +15,7 @@ class Mempool {
   ~Mempool();
 
   void* aligned_alloc(std::size_t size);
-  void* free(void* p);
+  void* free(void* chunk_ptr);
 
  private:
   MempoolConfig _config;

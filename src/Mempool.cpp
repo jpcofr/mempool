@@ -72,7 +72,7 @@ void* Mempool::aligned_alloc(std::size_t chunk_size) {
   SubPoolDescriptor subpool = *subpool_it;
 }
 
-void* Mempool::free(void* p) {
+void* Mempool::free(void* chunk_ptr) {
   // Releases the Mempool memory segment back to the OS
   if (_base_ptr != nullptr) {
     std::free(_base_ptr);

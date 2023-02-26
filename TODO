@@ -8,13 +8,13 @@
    [ ] Decide which of the invariants for alignment allocation (for supbpools and tests) deserve coding a test.
    [ ] Add test for corner cases
    [ ] Replace mocks in tests with gtest mocks.
-[ ] The request to allocate memory within a mempool should result in an allocation of the
+[x] The request to allocate memory within a mempool should result in an allocation of the
         chunk within the sub-pool that has the smallest possible chunk that will fit the
         requested allocation size.
    [ ] List corner cases to test
    [ ] Add test for corner cases
    [ ] Replace mocks in tests with gtest mocks.
-[ ] Chunk sizes should be multiples of the provided alignment.
+[x] Chunk sizes should be multiples of the provided alignment.
   [x] Identify corner cases
   [ ] Add test for corner cases
 [ ] The mempool has limited memory assigned when created should have an internal limit of the maximum amount of memory that it can allocate in total during creation.
@@ -51,3 +51,4 @@
    [ ] Replace vectors<> for a more efficient data structure (a tree? a hash table?).
      [ ] Decide if boost/GLib/std or other library has datastructures with sublinear time complexity applicable for this problem.
      [ ] Update CMakeLists.txt if necessary.
+   [ ] Implement a benchmark for memory allocation speed
