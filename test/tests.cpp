@@ -12,6 +12,15 @@ class MempoolTest : public ::testing::Test {
   void TearDown() override {}
 };
 
+TEST(MempoolTest, DISABLED_physical_memory_allocation_fails) {
+  // Arrange
+  // Create a mock of the physical memory allocation whose size is less than Mempool:max_pool_memory_size
+  // Act
+  // Construct a Mempool object
+  // Assert
+  // std::bad_alloc& is thrown
+}
+
 TEST_F(MempoolTest,
        chunk_allocation_chooses_pool_descriptors_with_the_smallest_chunk_size) {
   // Arrange

@@ -17,6 +17,17 @@ Mempool::Mempool(MempoolConfig config, std::size_t alignment) {
   }
 
   _config = config;
+
+  // Allocate physical memory
+  try {
+    _memory = std::malloc(max_pool_memory_size);
+    if (_memory == nullptr) {
+      throw std::bad_alloc();
+    }
+  } catch (std::bad_alloc& e) {
+    std::cerr << "Allocation failed: " << e.what() << std::endl;
+    // Perform error handling or cleanup as required.
+  }
 }
 
 Mempool::~Mempool() {}

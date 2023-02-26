@@ -13,6 +13,7 @@ class Mempool {
   void* aligned_alloc(std::size_t size);
   void* free(void* p);
 
-  private:
+ private:
   MempoolConfig _config;
+  void* _memory;
 };
