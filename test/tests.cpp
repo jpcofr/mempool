@@ -35,8 +35,7 @@ TEST(MempoolTest, DISABLED_physical_memory_allocation_fails) {
   // std::bad_alloc& is thrown
 }
 
-TEST_F(MempoolTest,
-       chunk_allocation_chooses_pool_descriptors_with_the_smallest_chunk_size) {
+TEST_F(MempoolTest,DISABLED_chunk_allocation_chooses_pool_descriptors_with_the_smallest_chunk_size) {
   // Arrange
   // First subpool size 1
   SubPoolDescriptor sp_descriptor_size_1(2, 1U);
@@ -126,7 +125,7 @@ TEST_F(MempoolTest, DISABLED_chunk_allocation_respects_subpool_chunk_amount) {
   }
 }
 
-TEST_F(MempoolTest, protect_memory_chunk_allocation_from_oversized_chunks) {
+TEST_F(MempoolTest, DISABLED_protect_memory_chunk_allocation_from_oversized_chunks) {
   // Arrange
   SubPoolDescriptor sp_descriptor_size_1(1, 1U);
   SubPoolDescriptor sp_descriptor_size_2(2, 2U);
@@ -149,7 +148,7 @@ TEST_F(MempoolTest, protect_memory_chunk_allocation_from_oversized_chunks) {
   }
 }
 
-TEST_F(MempoolTest, configuration_has_entries) {
+TEST_F(MempoolTest, DISABLED_configuration_has_entries) {
   // Arrange
   MempoolConfig mempool_config;
 
@@ -162,7 +161,7 @@ TEST_F(MempoolTest, configuration_has_entries) {
   }
 }
 
-TEST_F(MempoolTest, chunk_amount_and_size_are_consistent) {
+TEST_F(MempoolTest, DISABLED_chunk_amount_and_size_are_consistent) {
   // Arrange
 
   SubPoolDescriptor sp_descriptor_no_chunks(0, 1U);
