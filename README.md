@@ -13,7 +13,7 @@ Optionally install Ninja and ccache to reduce build time.
 mkdir build
 cd build
 cmake -GNinja ../
-ninja
+ninja all docs # or 'ninja' to build only default targets.
 ```
 
 # Other
